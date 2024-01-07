@@ -81,5 +81,37 @@ class TestDogApi:
     def test_list_breweries_by_state(self, open_brewery_api, state):
         list_breweries_by_state = open_brewery_api.get_list_breweries(state=state)
         assert_that(list_breweries_by_state, is_not(empty()), 'Не получен ответ от сервера')
-        assert_that(list_breweries_by_state[0].get('state'), equal_to(state), 'Название не соответствует требуемому'
-                                                                              'значению')
+        assert_that(list_breweries_by_state[0].get('state'), equal_to(state), 'Название штата не соответствует '
+                                                                              'требуемому значению')
+
+    @pytest.mark.parametrize('postal',
+                             [
+                                 '44107',
+                                 '44107-4840'
+                             ])
+    def test_list_breweries_by_postal(self, open_brewery_api, postal):
+        list_breweries_by_postal = open_brewery_api.get_list_breweries(postal=postal)
+        assert_that(list_breweries_by_postal, is_not(empty()), 'Не получен ответ от сервера')
+        assert_that(list_breweries_by_postal[0].get('postal_code'), contains_string(postal), 'Почтовый индекс не '
+                                                                                             'соответствует '
+                                                                                             'требуемому значению')
+    
+    @pytest.mark.parametrize('_type',
+                             [
+                                 'micro',
+                                 'nano',
+                                 'regional',
+                                 'brewpub',
+                                 'large',
+                                 'planning',
+                                 'bar',
+                                 'contract',
+                                 'proprietor',
+                                 'closed'
+                             ])
+    def test_list_breweries_by_type(self, open_brewery_api, _type):
+        list_breweries_by_type = open_brewery_api.get_list_breweries(type=_type)
+        assert_that(list_breweries_by_type, is_not(empty()), 'Не получен ответ от сервера')
+        assert_that(list_breweries_by_type[0].get('brewery_type'), contains_string(_type), 'Тип пивоварни не '
+                                                                                           'соответствует требуемому '
+                                                                                           'значению')
