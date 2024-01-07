@@ -1,7 +1,7 @@
 import requests
 import pprint
 
-BASE_URL_DOG_CEO = 'https://dog.ceo/api/breeds'
+BASE_URL_DOG_CEO = 'https://dog.ceo/api'
 
 
 class BaseRequest:
@@ -31,18 +31,21 @@ class BaseRequest:
             elif expected_error:
                 stop_flag = True
 
-        # log part
-        pprint.pprint(f'{request_type} example')
-        pprint.pprint(response.url)
-        pprint.pprint(response.status_code)
-        pprint.pprint(response.reason)
-        pprint.pprint(response.text)
-        pprint.pprint(response.json())
-        pprint.pprint('**********')
+        # # log part
+        # pprint.pprint(f'{request_type} example')
+        # pprint.pprint(response.url)
+        # pprint.pprint(response.status_code)
+        # pprint.pprint(response.reason)
+        # pprint.pprint(response.text)
+        # pprint.pprint(response.json())
+        # pprint.pprint('**********')
         return response
 
-    def get(self, endpoint, endpoint_id, expected_error=False):
-        url = f'{self.base_url}/{endpoint}/{endpoint_id}'
+    def get(self, endpoint, endpoint_id=None, expected_error=False):
+        if endpoint_id:
+            url = f'{self.base_url}/{endpoint}/{endpoint_id}'
+        else:
+            url = f'{self.base_url}/{endpoint}'
         response = self._request(url, 'GET', expected_error=expected_error)
         return response.json()
 
