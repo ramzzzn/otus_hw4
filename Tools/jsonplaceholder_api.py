@@ -39,7 +39,9 @@ class JsonPlaceholderAPI(BaseRequest):
         response = self.delete(route, resource_id)
         return response
 
-
+    def filter_resource(self, route, filter_name, filter_id):
+        response = self.get(f'{route}?{filter_name}={filter_id}')
+        return response
 
     def get_nested_resource(self, route, resource_id, nested_route):
         response = self.get(route, f'{resource_id}/{nested_route}')

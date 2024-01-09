@@ -17,6 +17,9 @@ class TestJsonPlaceholderAPI:
                                  'users'
                              ])
     def test_get_resource(self, jsonplaceholder_api, route, resource_id):
+        """
+        Проверка запроса ресурса с помощью метода 'GET'
+        """
         response = jsonplaceholder_api.get_resource(route, resource_id)
         # проверяем успешность полученного ответа
         assert_that(response, is_not(empty()), 'Не получен ответ от сервера')
@@ -29,6 +32,9 @@ class TestJsonPlaceholderAPI:
                                  ('posts', 'test_title', 'test_body', 1)
                              ])
     def test_create_resource(self, jsonplaceholder_api, route, title, body, user_id):
+        """
+        Проверка создания ресурса с помощью метода 'POST'
+        """
         response = jsonplaceholder_api.create_resource(route, title, body, user_id)
         # проверяем успешность полученного ответа
         assert_that(response.status_code, equal_to(201), 'Статус ответа не соответствует требуемому значению')
@@ -44,6 +50,9 @@ class TestJsonPlaceholderAPI:
                                  ('comment', 1, 'test_title', 'test_body', 1)
                              ])
     def test_update_resource(self, jsonplaceholder_api, route, resource_id, title, body, user_id):
+        """
+        Проверка изменения параметров ресурса с помощью метода 'PUT'
+        """
         response = jsonplaceholder_api.update_comment(route, resource_id, title, body, user_id)
         # проверяем успешность полученного ответа
         assert_that(response.status_code, equal_to(200), 'Статус ответа не соответствует требуемому значению')
@@ -59,6 +68,9 @@ class TestJsonPlaceholderAPI:
                                  ('posts', 1, 'test_title', 'test_body')
                              ])
     def test_patch_resource(self, jsonplaceholder_api, route, resource_id, title, body):
+        """
+        Проверка исправления параметра ресурса с помощью метода 'PATCH'
+        """
         response = jsonplaceholder_api.patch_resource(route, resource_id, title, body)
         # проверяем успешность полученного ответа
         assert_that(response.status_code, equal_to(200), 'Статус ответа не соответствует требуемому значению')
@@ -71,9 +83,17 @@ class TestJsonPlaceholderAPI:
 
     @pytest.mark.parametrize('route, resource_id',
                              [
-                                 ('posts', 1)
+                                 ('posts', 1),
+                                 ('comments', 1),
+                                 ('albums', 1),
+                                 ('photos', 1),
+                                 ('todos', 1),
+                                 ('users', 1)
                              ])
     def test_delete_resource(self, jsonplaceholder_api, route, resource_id):
+        """
+        Проверка удаления параметров ресурса с помощью метода 'DELETE'
+        """
         response = jsonplaceholder_api.delete_resource(route, resource_id)
         # проверяем успешность полученного ответа
         assert_that(response.status_code, equal_to(200), 'Статус ответа не соответствует требуемому значению')
@@ -82,14 +102,22 @@ class TestJsonPlaceholderAPI:
     @pytest.mark.parametrize('route, filter_name, filter_id',
                              [
                                  ('posts', 'userId', 1),
+                                 ('comments', 'postId', 1),
+                                 ('albums', 'userId', 1),
+                                 ('photos', 'albumId', 1),
+                                 ('todos', 'userId', 1)
                              ])
-    def test_filter_resource(self, jsonplaceholder_api, route, resource_id):
-        response = jsonplaceholder_api.get_resource(route, resource_id)
+    def test_filter_resource(self, jsonplaceholder_api, route, filter_name, filter_id):
+        """
+        Проверка фильтрации по параметрам ресурса
+        """
+        response = jsonplaceholder_api.filter_resource(route, filter_name, filter_id)
         # проверяем успешность полученного ответа
         assert_that(response, is_not(empty()), 'Не получен ответ от сервера')
-        if resource_id:
-            assert_that(response.get('id'), equal_to(resource_id),
-                        'Полученный идентификатор в ответе не соответствует запрашиваемому')
+        # проверяем фильтрацию по переданному фильтру
+        for resource in response:
+            assert_that(resource.get(f'{filter_name}'), equal_to(filter_id),
+                        'Фильтрация по переданному фильтру не cработала')
 
     @pytest.mark.parametrize('route, resource_id, nested_route',
                              [
@@ -100,6 +128,9 @@ class TestJsonPlaceholderAPI:
                                  ('users', 1, 'posts')
                              ])
     def test_get_nested_resource(self, jsonplaceholder_api, route, resource_id, nested_route):
+        """
+        Проверка получения параметров вложенного ресурса
+        """
         response = jsonplaceholder_api.get_nested_resource(route, resource_id, nested_route)
         # проверяем успешность полученного ответа
         assert_that(response, is_not(empty()), 'Не получен ответ от сервера')
