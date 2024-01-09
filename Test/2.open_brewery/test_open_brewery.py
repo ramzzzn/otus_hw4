@@ -2,7 +2,7 @@ import pytest
 from hamcrest import *
 
 
-class TestDogApi:
+class TestOpenBreweryApi:
     @pytest.mark.parametrize('obdb_id',
                              [
                                  'b54b16e1-ac3b-4bff-a11f-f7ae9ddc27e0'

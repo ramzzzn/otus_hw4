@@ -7,7 +7,7 @@ class OpenBreweryAPI(BaseRequest):
     def __init__(self):
         super().__init__(BASE_URL_OPEN_BREWERY)
 
-    def get_single_brewery(self, obdb_id, expected_error=False):
+    def get_single_brewery(self, obdb_id: str, expected_error=False):
         response = self.get(obdb_id, expected_error)
         return response
 
@@ -31,36 +31,4 @@ class OpenBreweryAPI(BaseRequest):
         if kwargs.get('type'):
             request = request + f'by_type={kwargs.get("type")}'
         response = self.get(request)
-        return response
-
-    # def get_list_breweries(self, per_page, expected_error=False):
-    #     response = self.get(f'?per_page={per_page}', expected_error)
-    #     return response
-
-    def get_list_breweries_by_city(self, city, expected_error=False):
-        response = self.get(f'?by_city={city}', expected_error)
-        return response
-
-    def get_list_breweries_by_dist(self, dist, expected_error=False):
-        response = self.get(f'?by_dist={dist}', expected_error)
-        return response
-
-    def get_list_breweries_by_ids(self, _id, expected_error=False):
-        response = self.get(f'?by_ids={_id}', expected_error)
-        return response
-
-    def get_list_breweries_by_name(self, name, expected_error=False):
-        response = self.get(f'?by_name={name}', expected_error)
-        return response
-
-    def get_list_breweries_by_state(self, state, expected_error=False):
-        response = self.get(f'?by_state={state}', expected_error)
-        return response
-
-    def get_list_breweries_by_postal(self, postal, expected_error=False):
-        response = self.get(f'?by_postal={postal}', expected_error)
-        return response
-
-    def get_list_breweries_by_type(self, type, expected_error=False):
-        response = self.get(f'?by_type={type}', expected_error)
         return response
