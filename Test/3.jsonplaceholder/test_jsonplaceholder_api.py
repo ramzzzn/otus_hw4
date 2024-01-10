@@ -47,13 +47,13 @@ class TestJsonPlaceholderAPI:
 
     @pytest.mark.parametrize('route, resource_id, title, body, user_id',
                              [
-                                 ('comment', 1, 'test_title', 'test_body', 1)
+                                 ('posts', 1, 'test_title', 'test_body', 1)
                              ])
     def test_update_resource(self, jsonplaceholder_api, route, resource_id, title, body, user_id):
         """
         Проверка изменения параметров ресурса с помощью метода 'PUT'
         """
-        response = jsonplaceholder_api.update_comment(route, resource_id, title, body, user_id)
+        response = jsonplaceholder_api.update_resource(route, resource_id, title, body, user_id)
         # проверяем успешность полученного ответа
         assert_that(response.status_code, equal_to(200), 'Статус ответа не соответствует требуемому значению')
         assert_that(response.ok, equal_to(True), 'Ошибка при создании ресурса')

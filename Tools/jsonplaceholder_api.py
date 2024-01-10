@@ -19,12 +19,12 @@ class JsonPlaceholderAPI(BaseRequest):
         }
         return self.post(data, route, is_json=True, expected_error=expected_error)
 
-    def update_comment(self, route, resource_id: int, title: str, body: str, user_id: int, expected_error=False):
+    def update_resource(self, route, resource_id: int, title: str, body: str, user_id: int, expected_error=False):
         data = {
-            'postId': user_id,
             'id': resource_id,
-            'name': title,
+            'title': title,
             'body': body,
+            'userId': user_id,
         }
         return self.put(data, route, endpoint_id=resource_id, is_json=True, expected_error=expected_error)
 
